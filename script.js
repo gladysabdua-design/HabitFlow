@@ -1,4 +1,91 @@
+function displayHabits() {
+  habitList.innerHTML = '';
+  const last7Days = getLast7Days();
 
+  habits.forEach((habit, index) => {
+    const li = document.createElement('li');
+    li.style.marginBottom = '20px';
+    li.style.padding = '15px';
+    li.style.background = '#f9f9f9';
+    li.style.borderRadius = '8px';
+
+    const streak = calculateStreak(habit.completedDates || []);
+    const isDoneToday = habit.completedDates && habit.completedDates.includes(today);
+
+    // Top row
+    const topRow = document.createElement('div');
+    topRow.style.display = 'flex';
+    topRow.style.justifyContent = 'space-between';
+    topRow.style.marginBottom = '10px';
+    topRow.innerHTML = `<strong>${habit.name}</strong> - 🔥 ${streak}`;
+
+    const btnDiv = document.createElement('div');
+    const doneBtn = document.createElement('button');
+    doneBtn.textContent = isDoneToday? '✓ Done' : 'Mark Done';
+    doneBtn.style.background = isDoneToday? '#4CAF50' : '#2196F3';
+    doneBtn.style.color = 'white';
+    doneBtn.style.border = 'none';
+    doneBtn.style.padding = '5px 10px';
+    doneBtn.style.borderRadius = '4px';
+    doneBtn.onclick = () => toggleHabit(index);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'X';
+    deleteBtn.style.background = '#f44336';
+    deleteBtn.style.color = 'white';
+    deleteBtn.style.border = 'none';
+    deleteBtn.style.padding = '5px 10px';
+    deleteBtn.style.marginLeft = '5px';
+    deleteBtn.style.borderRadius = '4px';
+    deleteBtn.onclick = () => deleteHabit(index);
+
+    btnDiv.appendChild(doneBtn);
+    btnDiv.appendChild(deleteBtn);
+    topRow.appendChild(btnDiv);
+    li.appendChild(topRow);
+
+    // Weekly calendar
+    const weekRow = document.createElement('div');
+    weekRow.style.display = 'flex';
+    weekRow.style.gap = '5px';
+    weekRow.style.justifyContent = 'center';
+
+    const days = ['M','T','W','T','F','S','S'];
+    last7Days.forEach((date, i) => {
+      const dayBox = document.createElement('div');
+      dayBox.textContent = days[i];
+      dayBox.style.width = '30px';
+      dayBox.style.height = '30px';
+      dayBox.style.display = 'flex';
+      dayBox.style.alignItems = 'center';
+      dayBox.style.justifyContent = 'center';
+      dayBox.style.borderRadius = '4px';
+      dayBox.style.fontSize = '12px';
+      
+      if (habit.completedDates && habit.completedDates.includes(date)) {
+        dayBox.style.background = '#4CAF50';
+        dayBox.style.color = 'white';
+      } else {
+        dayBox.style.background = '#ddd';
+        dayBox.style.color = '#666';
+      }
+      weekRow.appendChild(dayBox);
+    });
+
+    li.appendChild(weekRow);
+    habitList.appendChild(li);
+  });
+}
+
+function getLast7Days() {
+  const dates = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    dates.push(d.toISOString().split('T')[0]);
+  }
+  return dates;
+}
 const habitInput = document.getElementById('habitInput');
 const addBtn = document.getElementById('addBtn');
 const habitList = document.getElementById('habitList');
