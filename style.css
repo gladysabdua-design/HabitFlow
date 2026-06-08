@@ -1,0 +1,49 @@
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  padding: 20px;
+}
+h1 {
+  color: #333;
+}
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.add-habit {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+#habitInput {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+}
+
+#addBtn {
+  padding: 10px 20px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#addBtn:hover {
+  background: #45a049;
+}
+
+li {
+  padding: 10px;
+  background: #f9f9f9;
+  margin: 5px 0;
+  border-radius: 5px;
+  list-style: none;
+}
