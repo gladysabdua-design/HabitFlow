@@ -1,3 +1,12 @@
+
+const habitInput = document.getElementById('habitInput');
+const addBtn = document.getElementById('addBtn');
+const habitList = document.getElementById('habitList');
+
+// Load habits + today's date
+let habits = JSON.parse(localStorage.getItem('habits')) || [];
+const today = new Date().toISOString().split('T')[0]; // Format: 2026-04-08
+
 function displayHabits() {
   habitList.innerHTML = '';
   const last7Days = getLast7Days();
@@ -85,49 +94,6 @@ function getLast7Days() {
     dates.push(d.toISOString().split('T')[0]);
   }
   return dates;
-}
-const habitInput = document.getElementById('habitInput');
-const addBtn = document.getElementById('addBtn');
-const habitList = document.getElementById('habitList');
-
-// Load habits + today's date
-let habits = JSON.parse(localStorage.getItem('habits')) || [];
-const today = new Date().toISOString().split('T')[0]; // Format: 2026-04-08
-
-function displayHabits() {
-	habitList.innerHTML = '';
-
-	habits.forEach((habit, index) => {
-		const li = document.createElement('li');
-
-		// Check if done today
-		const isDoneToday = habit.completedDates && habit.completedDates.includes(today);
-
-		// Calculate streak
-		const streak = calculateStreak(habit.completedDates || []);
-
-		li.innerHTML = `
-			<span style="text-decoration: ${isDoneToday? 'line-through' : 'none'}">
-				${habit.name} - <img src="https://fonts.gstatic.com/s/e/notoemoji/17.0/1f525/72.png" alt="fire" style="width:16px;height:16px;vertical-align:middle;"/> ${streak} day streak
-			</span>
-		`;
-
-		// Mark Done button
-		const doneBtn = document.createElement('button');
-		doneBtn.textContent = isDoneToday? '✓ Done' : 'Mark Done';
-		doneBtn.style.margin = '0 5px';
-		doneBtn.style.background = isDoneToday? '#4CAF50' : '#2196F3';
-		doneBtn.onclick = () => toggleHabit(index);
-
-		// Delete button
-		const deleteBtn = document.createElement('button');
-		deleteBtn.textContent = 'X';
-		deleteBtn.onclick = () => deleteHabit(index);
-
-		li.appendChild(doneBtn);
-		li.appendChild(deleteBtn);
-		habitList.appendChild(li);
-	});
 }
 
 function addHabit() {
